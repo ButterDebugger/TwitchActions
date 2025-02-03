@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<style>
+			body {
+				margin: 0px;
+				padding: 0px;
+				overflow: hidden;
+			}
+			#message-container {
+				position: absolute;
+				bottom: 0px;
+				right: 0px;
+
+				transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+
+				padding: 1rem 0.25rem;
+				margin: 1rem;
+				border-radius: 1rem;
+				background-color: #18181b;
+				color: #fff;
+			}
+			#message-container.hidden {
+				visibility: hidden;
+			}
+			#message-container.page-loaded {
+				transform: translateX(calc(100% + 4rem));
+			}
+			#message-container.active {
+				transform: translateX(0%);
+			}
+			#message-container * {
+				background-color: transparent !important;
+				background: transparent !important;
+				width: fit-content !important;
+				height: fit-content !important;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="message-container" class="hidden"></div>
+
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+			integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+			crossorigin="anonymous"
+		></script>
+		<script>
+			const socket = io();
+			const msgContainer = document.getElementById("message-container");
+			const decoder = new TextDecoder("utf-8");
+
+			// Fix bug with chrome where the translate doesn't position immediately
+			window.addEventListener("load", () => {
+				msgContainer.classList.add("page-loaded");
+
+				// Wait for the animation to finish before showing
+				setTimeout(() => {
+					msgContainer.classList.remove("hidden");
+				}, 500);
+			});
+
+			socket.on("highlight", function (buffer) {
+				const data = decoder.decode(buffer);
+				const { message: body } = JSON.parse(data);
+
+				console.log("highlight", body);
+
+				// If a chat is already showing, remove it first.
+				if (msgContainer.classList.contains("active")) {
+					msgContainer.classList.remove("active");
+
+					// Then set the highlight after the animation
+					msgContainer.addEventListener(
+						"transitionend",
+						() => setHighlight(body),
+						{ once: true }
+					);
+					return;
+				}
+
+				// Otherwise just set the highlight
+				setHighlight(body);
+			});
+
+			socket.on("unhighlight", function () {
+				console.log("unhighlight");
+
+				msgContainer.classList.remove("active");
+
+				msgContainer.addEventListener(
+					"transitionend",
+					() => clearContainer(),
+					{ once: true }
+				);
+			});
+
+			function clearContainer() {
+				while (msgContainer.firstChild) {
+					msgContainer.removeChild(msgContainer.firstChild);
+				}
+			}
+
+			function setHighlight(body) {
+				clearContainer();
+
+				const msgEle = document.createElement("div");
+				msgContainer.appendChild(msgEle);
+				msgEle.innerHTML = body;
+
+				msgContainer.classList.add("active");
+			}
+		</script>
+	</body>
+</html>

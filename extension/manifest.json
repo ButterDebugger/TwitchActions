@@ -1,0 +1,28 @@
+{
+    "name": "Chat Actions",
+    "description": "Plugin that adds click actions that communicate to a python server",
+    "version": "1.0.0",
+    "manifest_version": 3,
+    "author": "ButterDebugger",
+    "content_scripts": [
+        {
+            "matches": [
+                "https://*.twitch.tv/*"
+            ],
+            "js": [
+                "inject.js"
+            ],
+            "run_at": "document_start"
+        }
+    ],
+    "action": {
+        "default_popup": "popup.html"
+    },
+    "icons": {
+        "16": "icon-16.png",
+        "32": "icon-32.png",
+        "48": "icon-48.png",
+        "128": "icon-128.png",
+        "512": "icon-512.png"
+    }
+}

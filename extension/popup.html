@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Click Actions</title>
+		<link
+			rel="stylesheet"
+			href="https://debutter.dev/x/css/style.css@1.2.0"
+		/>
+		<style>
+			body {
+				font-size: large;
+				margin: 0.75em;
+			}
+			button {
+				display: flex;
+				gap: 0.25em;
+
+				padding: 0.5em 0.75em;
+				white-space: nowrap;
+			}
+		</style>
+	</head>
+	<body>
+		<button id="unhighlight">
+			<svg
+				width="20"
+				height="20"
+				viewBox="0 0 20 20"
+				focusable="false"
+				aria-hidden="true"
+				role="presentation"
+			>
+				<path
+					fill="white"
+					fill-rule="evenodd"
+					d="M 7 6 L 13 7 L 13 9 L 7 9 Z M 7 5 L 7 3 L 13 2 L 13 6 Z M 5 12 Q 5 10 7 10 L 13 10 Q 15 10 15 12 L 15 18 L 13 18 L 13 12 L 7 12 L 7 16 L 13 16 L 13 18 L 5 18 Z"
+					clip-rule="evenodd"
+				></path>
+			</svg>
+			<span>Remove Highlight</span>
+		</button>
+		<script src="actions.js"></script>
+	</body>
+</html>
