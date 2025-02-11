@@ -1,6 +1,8 @@
 from flask import Flask, jsonify, request, make_response
 from flask_socketio import SocketIO, emit
+from os import path
 
+index_path = path.abspath("./index.html")
 app = Flask(__name__)
 socketio = SocketIO(app)
 
@@ -20,7 +22,7 @@ def home():
         return response
 
     # Handle actual request
-    with open("./index.html", "r") as f:
+    with open(index_path, "r") as f:
         return f.read()
 
 @app.route("/highlight", methods=["POST", "OPTIONS"])

@@ -29,7 +29,7 @@
     python server.py
     ```
 
-    Or simply double-click the `server.py` file
+    Or simply double-click the `start.bat` file
 
 ## During Streaming
 
